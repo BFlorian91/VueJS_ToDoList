@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://kit.fontawesome.com/fd29e2acd0.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-dark text-light">
+    <div id="app">
+        <h1 class="d-flex justify-content-center mt-4 mb-4">{{ title }}</h1>
+        <div class="container">
+            <form 
+                class="d-flex justify-content-center"
+                v-on:submit.prevent="addTask()"
+            >
+                <input class="form-control form-control-lg" type="text" placeholder="task to do" v-model="task" name="taskInput">
+                <button class="btn btn-info ml-3 w-25" type="submit" name="buttonAddTask">Add</button>
+            </form>
+            <ul class="list-group">
+                <li 
+                    v-bind:class="[task.done ? done : pending, lgi, mt]" 
+                    v-for="task in tasks"
+                >
+                    <span v-if="!task.isInEditMode" class="d-flex">
+                        <span class="font flex-grow-1">
+                            {{ task.description }}
+                        </span>
+                    
+                        <i v-on:click="task.done = !task.done" v-bind:class="[task.done ? warning : success, icon]"></i>
+                        <i v-on:click="editMode(task)" class="icons text-info fas fa-pen-square ml-3"></i>
+                        <i v-on:click="deleteTask(task)" class="icons text-danger fas fa-trash ml-3"></i>
+                    </span>
+                    <span v-else="task.isInEditMode">
+                        <input 
+                            class="d-inline form-control form-control-lg" 
+                            type="text" 
+                            name="editTask" 
+                            v-model="task.description" 
+                            v-on:keyup.enter="editMode(task)"
+                            v-on:keyup.esc="task.isInEditMode = false"
+                        >
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="App.vue"></script>
+</body>
+</html>
